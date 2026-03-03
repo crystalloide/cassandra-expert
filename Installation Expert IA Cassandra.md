@@ -60,7 +60,10 @@ ln -s ~/claude-skills/cassandra-expert ~/.gemini/skills/cassandra-expert
 
 #####  Étape 5 : Activer les Skills dans Gemini
 
-#####  Lancez l'interface : gemini
+#####  Lancez l'interface : 
+```bash
+gemini
+```
 
 #####  Une fois dans l'interface, tapez : 
 ```bash
@@ -113,6 +116,7 @@ gemini "Analyse mon fichier cassandra.yaml. Est-ce que la configuration des toke
 
      Puisque le skill définit la commande /cql, 
      Gemini l'interprétera immédiatement avec les bonnes pratiques d'expert.
+
 
 
 
