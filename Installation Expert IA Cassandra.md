@@ -25,6 +25,13 @@ npm install -g npm@11.11.0
 gemini login
 ```
      => choisir le choix 1 pour "truster" le répertoire en cours
+
+#####  Gemini CLI redémarre :
+     => choisir un mot de passe robuste : xxxxxxxx
+
+     => choisir le choix 1 pour se logger avec son compte Google
+
+     => taper 'r' pour redémarrer Gemini cli
      
 #####  Note : Cela utilise le tier gratuit (1 000 requêtes/jour).
 
@@ -106,4 +113,5 @@ gemini "Analyse mon fichier cassandra.yaml. Est-ce que la configuration des toke
 
      Puisque le skill définit la commande /cql, 
      Gemini l'interprétera immédiatement avec les bonnes pratiques d'expert.
+
 
