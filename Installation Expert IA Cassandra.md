@@ -13,6 +13,9 @@
 ```bash
 npm install -g @google/gemini-cli@preview
 ```
+```bash
+npm install -g npm@11.11.0
+```
 
 #####  Étape 2 : Connexion (Authentification gratuite)
 
@@ -21,7 +24,8 @@ npm install -g @google/gemini-cli@preview
 ```bash
 gemini login
 ```
-
+     => choisir le choix 1 pour "truster" le répertoire en cours
+     
 #####  Note : Cela utilise le tier gratuit (1 000 requêtes/jour).
 
 #####  Étape 3 : Cloner le dépôt de Skills
@@ -102,3 +106,4 @@ gemini "Analyse mon fichier cassandra.yaml. Est-ce que la configuration des toke
 
      Puisque le skill définit la commande /cql, 
      Gemini l'interprétera immédiatement avec les bonnes pratiques d'expert.
+
