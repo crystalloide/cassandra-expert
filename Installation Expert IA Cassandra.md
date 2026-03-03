@@ -96,7 +96,9 @@ gemini skills list
 
 ```bash
 cd /endroit du fichier à analyser
+```
 
+```bash
 gemini "Analyse mon fichier cassandra.yaml. Est-ce que la configuration des tokens et du stockage est optimale pour un cluster de production ?"
 ```
 
@@ -129,8 +131,4 @@ gemini "Analyse mon fichier cassandra.yaml. Est-ce que la configuration des toke
 
      Puisque le skill définit la commande /cql, 
      Gemini l'interprétera immédiatement avec les bonnes pratiques d'expert.
-
-
-
-
 
