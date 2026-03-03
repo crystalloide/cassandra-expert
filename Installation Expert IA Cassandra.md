@@ -41,7 +41,7 @@ gemini login
 
 ```bash
 git clone https://github.com/rustyrazorblade/skills.git ~/claude-skills
-```bash
+```
 
 #####  Étape 4 : Lier les Skills à Gemini
 
@@ -113,5 +113,6 @@ gemini "Analyse mon fichier cassandra.yaml. Est-ce que la configuration des toke
 
      Puisque le skill définit la commande /cql, 
      Gemini l'interprétera immédiatement avec les bonnes pratiques d'expert.
+
 
 
