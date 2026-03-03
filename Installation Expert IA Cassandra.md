@@ -132,3 +132,67 @@ gemini "Analyse mon fichier cassandra.yaml. Est-ce que la configuration des toke
      Puisque le skill définit la commande /cql, 
      Gemini l'interprétera immédiatement avec les bonnes pratiques d'expert.
 
+
+##### Exemple de résultat fourni par l'expert Cassandra IA : 
+
+```text
+✦ L'analyse de votre fichier cassandra.yaml montre des points positifs, mais aussi plusieurs points critiques qui pourraient compromettre la stabilité et la
+  sécurité d'un cluster en production.
+
+  Voici mon évaluation détaillée :
+
+
+  1. Configuration des Tokens (Vnodes) - Optimale
+   * num_tokens: 16 : C'est un excellent choix pour les versions récentes de Cassandra (3.x/4.x). Cela permet un bon équilibrage de la charge sans surcharger
+     le CPU lors des réparations (repairs) ou des compactions.
+   * allocate_tokens_for_local_replication_factor: 3 : C'est un paramètre crucial souvent oublié. Il optimise la répartition des tokens en fonction de votre
+     facteur de réplication (RF=3), ce qui garantit une distribution de données plus uniforme dès le départ.
+
+
+  2. Configuration du Stockage - Améliorable
+   * Politiques de panne (disk_failure_policy: stop) : C'est correct, mais en production, die est souvent préféré si vous utilisez un orchestrateur (comme
+     Kubernetes) ou un gestionnaire de services, afin que le processus soit redémarré proprement au lieu de rester "zombie".
+   * Chemins par défaut : Les répertoires (data_file_directories, commitlog_directory) sont commentés, utilisant donc les chemins par défaut. Pour la
+     production :
+       * Assurez-vous que le CommitLog et les Data Files sont sur des disques physiques séparés (ou au moins des partitions distinctes avec des SSD
+         performants) pour éviter les contentions d'I/O.
+       * Utilisez impérativement des disques SSD ou NVMe.
+   * Débit de compaction (compaction_throughput_mb_per_sec: 64) : Cette valeur est un peu basse pour des disques modernes. Sur des SSD/NVMe, on monte souvent
+     à 128, 256, voire on désactive la limite (0) si les ressources le permettent.
+
+  3. Points Critiques et Risques (Production)
+
+  ⚠️ Timeouts excessifs (Danger)
+  C'est le point le plus problématique de votre fichier :
+
+
+   1 read_request_timeout_in_ms: 3600000  # 1 heure !
+   2 range_request_timeout_in_ms: 3600000
+   3 write_request_timeout_in_ms: 3600000
+   4 request_timeout_in_ms: 3600000
+  Pourquoi est-ce dangereux ? En production, si un nœud ralentit ou ne répond pas, le coordinateur attendra 1 heure avant d'abandonner. Cela va saturer les
+  threads de lecture/écriture (concurrent_reads/writes) et peut faire tomber tout le cluster par effet domino.
+   * Recommandation : Revenez à des valeurs raisonnables (ex: 5000 à 10000 ms pour les lectures/écritures, et peut-être plus pour les range_request si
+     nécessaire, mais jamais 1 heure).
+
+
+  ⚠️ Sécurité inexistante
+   1 authenticator: AllowAllAuthenticator
+   2 authorizer: AllowAllAuthorizer
+  N'importe qui ayant accès au réseau peut lire, modifier ou supprimer toutes vos données.
+   * Recommandation : Changez pour PasswordAuthenticator et CassandraAuthorizer.
+
+
+  4. Performance et Réglages Fins
+   * concurrent_compactors: 8 : Vous l'avez augmenté, ce qui est bien si vous avez beaucoup de cœurs et des SSD.
+   * memtable_allocation_type: heap_buffers : Pour des heaps importants (> 8 Go), envisagez offheap_objects pour réduire la pression sur le Garbage Collector
+     (GC).
+   * concurrent_reads / writes : Ils sont à 32. Sur des serveurs avec beaucoup de cœurs et des disques NVMe, vous pourriez augmenter ces valeurs (ex: 64 ou
+     128) après tests de charge.
+
+
+  Résumé de mon avis :
+  Votre configuration des tokens est très bonne. Cependant, la configuration globale n'est pas prête pour la production à cause des timeouts extrêmes et de
+  l'absence de sécurité.
+
+```
