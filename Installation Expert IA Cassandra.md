@@ -37,8 +37,7 @@ gemini login
 
 #####  Étape 3 : Cloner le dépôt de Skills
 
-#####  Nous allons récupérer les compétences de Jon Haddad (rustyrazorblade), qui est un expert renommé de Cassandra.
-
+#####  Nous allons nous appuyer sur le projet et les compétences  de Jon Haddad (rustyrazorblade), qui est un expert renommé de Cassandra.
 ```bash
 git clone https://github.com/rustyrazorblade/skills.git ~/claude-skills
 ```
@@ -58,23 +57,35 @@ mkdir -p ~/.gemini/skills
 ln -s ~/claude-skills/cassandra-expert ~/.gemini/skills/cassandra-expert
 ```
 
+```bash
+cd ~/claude-skills/plugins/cassandra-expert
+mv README.md SKILL.md
+```
+
+     Gemini va lire le fichier qu'on lui fournira et utiliser les instructions de ~/claude-skills/cassandra-expert/SKILL.md
+	 
 #####  Étape 5 : Activer les Skills dans Gemini
-
-#####  Lancez l'interface : 
 ```bash
-gemini
+gemini skills link ~/claude-skills/plugins/cassandra-expert/skills/expert
 ```
+     
+     Si demandé, saisir le mot de passe xxxxxx
+     
+	répondre "Y"
+	
+#####  Étape 6 : On vérifie que le nouveau skills est visible dans Gemini		
+```bash	
+gemini skills list	
+```	
+    Loaded cached credentials.
+    Discovered Agent Skills:
+    
+    expert [Enabled]
+      Description: General Apache Cassandra expertise for questions, CQL analysis, best practices, vnodes, and guidance. Use for general Cassandra questions that don't fit diagnose, optimize, or data-model.
+      Location:    /home/user/.gemini/skills/expert/SKILL.md
+    
 
-#####  Une fois dans l'interface, tapez : 
-```bash
-/settings
-```
-
-#####  Utilisez les flèches pour activer "Experimental: Agent Skills".
-
-#####  Quittez les réglages (Esc ou via le menu).
-
-#####  Cas pratique : Analyse de votre cassandra.yaml
+#####  Cas pratique : Analyse de votre ficheir exemple : cassandra.yaml
 
      Maintenant que le skill "Cassandra Expert" est installé, 
      nous allons l'utiliser sur le fichier que vous avez fourni. 
@@ -84,6 +95,8 @@ gemini
      Lancez la commande suivante :
 
 ```bash
+cd /endroit du fichier à analyser
+
 gemini "Analyse mon fichier cassandra.yaml. Est-ce que la configuration des tokens et du stockage est optimale pour un cluster de production ?"
 ```
 
@@ -116,6 +129,7 @@ gemini "Analyse mon fichier cassandra.yaml. Est-ce que la configuration des toke
 
      Puisque le skill définit la commande /cql, 
      Gemini l'interprétera immédiatement avec les bonnes pratiques d'expert.
+
 
 
 
